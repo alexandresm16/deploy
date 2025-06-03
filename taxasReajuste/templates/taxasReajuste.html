@@ -1,0 +1,79 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section class="container">
+    <div class="container my-5">
+        <h2 class="mb-4 text-center"><u>Taxas de Reajuste</u></h2>
+
+        <button class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#incluirTaxaModal">
+            <span><i class="fa-solid fa-plus"></i></span>
+            Incluir Reajuste
+        </button>
+        <div class="">
+            <form action="" method="GET">
+                <div>
+                    <label class="label p-2 mt-2"></label>
+                    <div class="control is-expanded">
+                        <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}"
+                               placeholder="Digite o nome da Taxa">
+                    </div>
+                    <div class="control">
+                        <button type="submit" class="btn btn-success mt-2 mb-4">
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% bootstrap_messages %}
+        <div class="text-end">
+            <div class="pe-3">
+                Total de Taxas de reajustes: {{ qtd_reajustes }}
+            </div>
+        </div>
+
+        {% if taxas_r%}
+        <div class="table-responsive shadow-sm rounded bg-white p-4">
+            <table class="table table-striped align-middle text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Valor (%)</th>
+                    <th scope="col">Classe</th>
+                    <th scope="col">Data da Última Alteração</th>
+                    <th scope="col">Editar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for taxa in taxas_r %}
+                <tr>
+                    <td>{{ taxa.nome }}</td>
+                    <td><b>{{ taxa.valor|default:"Valor inválido" }}</b></td>
+                    <td>{{ taxa.get_classe_display }}</td>
+                    <td>{{ taxa.data_alteracao }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal"
+                                data-bs-target="#editarTaxaModal{{ taxa.id }}">
+                            Editar
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger me-2" data-bs-toggle="modal"
+                                data-bs-target="#excluirModal{{ taxa.id }}">
+                            Excluir
+                        </button>
+                        <a class="btn btn-sm btn-outline-warning"
+                           href="{% url 'calcula_taxa' taxa.id %}">Aplicar</a>
+                    </td>
+                </tr>
+                {% include "modaisReajuste.html" %}
+                {% endfor %}
+                </tbody>
+            </table>
+            {% include 'paginator.html' %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% include "modalIncluir.html" %}
+{% endblock %}

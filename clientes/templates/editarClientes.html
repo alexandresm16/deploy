@@ -1,0 +1,22 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section>
+    <div class="container py-5">
+        <form method="post" enctype="multipart/form-data">
+            <h1 class="text-center">Editar Cliente</h1>
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% bootstrap_messages %}
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-md btn-success">Editar</button>
+                <a href="{% url 'listar_clientes' %}" type="button" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+    </div>
+</section>
+{% endblock %}

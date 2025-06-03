@@ -1,0 +1,75 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section class="container">
+    <div class="container my-5">
+        <h2 class="mb-4 text-center"><u>Clientes</u></h2>
+
+        <section class="container px-3 py-2">
+
+            <div class="d-flex justify-content-start mb-4">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#incluirCliente">
+                    <span><i class="fa-solid fa-plus"></i></span>
+                    Incluir Clientes
+                </button>
+            </div>
+
+            <div class="">
+                <form action="" method="GET">
+                    <div class="d-flex align-items-start gap-2 my-4">
+                        <label class="label p-2 mt-2"></label>
+                        <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}"
+                               placeholder="Digite o nome do Cliente">
+                        <button type="submit" class="btn btn-success">
+                            Buscar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        {% bootstrap_messages %}
+        <div class="text-end">
+            <div class="pe-3">
+                Total de Clientes cadastrados: {{ qtd_clientes }}
+            </div>
+        </div>
+
+        <div class="table-responsive shadow-sm rounded bg-white p-4">
+            <table class="table table-striped align-middle text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Editar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.fone }}</td>
+                    <td>{{ cliente.email }}</td>
+                    <td>
+                        <a href="{% url 'editar_cliente' cliente.id %}" class="btn btn-sm btn-outline-primary me-2">
+                            Editar
+                        </a>
+                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                data-bs-target="#excluirClienteModal{{ cliente.id }}">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+                {% include "excluirClientes.html" %}
+                {% endfor %}
+                </tbody>
+            </table>
+            {% include 'paginator.html' %}
+        </div>
+
+    </div>
+</section>
+{% include "incluirCliente.html" %}
+{% endblock %}

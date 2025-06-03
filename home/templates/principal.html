@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+  {% block head %}
+    {% include 'head.html' %}
+  {% endblock %}
+
+  <body>
+    <nav>
+      <div class="text-bg-dark border-bottom border-secondary">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+              <span><img src="{% static '/img/building1.png' %}" alt="Example image" /></span>
+              <span>IMOBILIARIA</span>
+            </a>
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+              <li>
+                <a href="/" class="nav-link text-white {% if request.path == 'index' %} text-secondary {% endif %}"><svg class="bi d-block mx-auto mb-1" width="24" height="24"></svg>Home</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><svg class="bi d-block mx-auto mb-1" width="24" height="24"></svg>Negocios</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'listar_visitas' %}">Agendar Visitas</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'listar_transacoes' %}">Realizar transacao</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false"><svg class="bi d-block mx-auto mb-1" width="24" height="24"></svg>Imobiliaria</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'listar_proprietarios' %}">Cadastrar Proprietário</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'listar_clientes' %}">Cadastrar Cliente</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'listar_corretores' %}">Cadastrar Corretores</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'listar_imoveis' %}">Cadastrar Imovel</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false"><svg class="bi d-block mx-auto mb-1" width="24" height="24"></svg>Administrativo</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'lista_taxas' %}">Cadastrar Taxa</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'lista_reajustes' %}">Cadastrar Reajuste</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    {% include 'messages.html' %}
+
+    {% block content %}
+
+    {% endblock %}
+
+    {% block footer %}
+      {% include 'footer.html' %}
+    {% endblock %}
+  </body>
+</html>

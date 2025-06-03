@@ -1,0 +1,65 @@
+{% extends 'principal.html' %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section class="container">
+    <div class="container my-5">
+        <h2 class="mb-4 text-center"><u>Visitas</u></h2>
+        <a href="{% url 'incluir_visita' %}" class="btn btn-primary mb-4">
+            <span><i class="fa-solid fa-plus"></i></span>
+            Incluir Visita
+        </a>
+
+        <div class="">
+            <form action="" method="GET">
+                <div class="d-flex align-items-start gap-2 mt-2 mb-4">
+                    <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}"
+                           placeholder="Digite o código do imóvel, nome do corretor ou nome do cliente"/>
+                    <button type="submit" class="btn btn-success">Buscar</button>
+                </div>
+            </form>
+        </div>
+
+        {% bootstrap_messages %}
+        <div class="text-end">
+            <div class="pe-3">
+                Total de Visitas cadastradas: {{ qtd_visitas }}
+            </div>
+        </div>
+
+        {% if visitas %}
+        <div class="table-responsive shadow-sm rounded bg-white p-4">
+            <table class="table table-striped align-middle text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Imovel</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Corretor</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for visita in visitas %}
+                <tr>
+                    <td>{{ visita.imovel.codigo }}</td>
+                    <td>{{ visita.cliente.nome }}</td>
+                    <td>{{ visita.corretor }}</td>
+                    <td>{{ visita.data_hora }}</td>
+                    <td>{{ visita.status }}</td>
+                    <td>
+                        <a href="{% url 'editar_visita' visita.id %}"
+                           class="btn btn-sm btn-outline-primary me-2">Editar</a>
+                        <a href="{% url 'visualizar_visita' visita.id %}" class="btn btn-sm btn-outline-success me-2">Visualizar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% include 'paginator.html' %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

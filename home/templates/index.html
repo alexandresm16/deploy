@@ -1,0 +1,59 @@
+{% extends 'principal.html' %}
+{% load static %}
+{% block content %}
+  <div class="pagina-inicial">
+    <div style="height: 30px;"></div>
+    <section class="banner container py-5">
+      <div class="pt-5 text-center">
+        <h1 class="display-4 fw-bold text-body-emphasis">IMOBILIARIA</h1>
+        <div class="col-lg-6 mx-auto py-4">
+          <p class="lead mb-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam cum maxime provident quia necessitatibus illum aliquid quas iste, nobis ipsam sunt culpa odio quos, explicabo quisquam! Iure porro facilis sit.</p>
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-3 mb-5">
+            <button type="button" class="buton-elegante px-4">Comprar</button>
+            <button type="button" class="buton-elegante px-4">Alugar</button>
+          </div>
+        </div>
+        <div class="overflow-hidden" style="max-height: 30vh;">
+          <div class="container"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="py-5 m-5">
+      <div class="row g-4 gap-4" style="gap: 12px; display: flex; justify-content: center; align-items: center;">
+        {% for imovel in imoveis %}
+          <div class="col-12 col-sm-6 col-md-4 col-lg-2 h-100 rounded-4 pt-2 carta">
+            <a href="{% url 'visualizar_imovel' imovel.id %}" class="text-decoration-none">
+              <div class="card overflow-hidden">
+                {% if imovel.foto %}
+                  <img src="{{ imovel.foto.url }}" width="400px" height="250px" alt="Foto do imóvel" class="card-img-top bg-image hover-zoom" />
+                {% else %}
+                  <img src="{% static '/img/placeholder.png' %}" width="400px" height="250px" alt="Foto do imóvel" class="card-img-top bg-image hover-zoom" />
+                {% endif %}
+              </div>
+              <div class="card-body py-2 text-light">
+                <h4 class="card-title text-center py-4">{{ imovel.tipo|title }}</h4>
+                <p class="card-text">
+                  {% load custom_filters %}
+                  <i class="fa-solid fa-coins"></i>
+                  <strong>Venda:</strong> {{ imovel.valor_venda|formatar_moeda }} <br />
+                  <i class="fa-solid fa-handshake"></i>
+                  <strong>Locação:</strong> {{ imovel.valor_locacao|formatar_moeda }} <br />
+                  <i class="fa-solid fa-bed"></i>
+                  <strong>Quartos:</strong> {{ imovel.quartos }} <br />
+                  <i class="fa-solid fa-bath"></i>
+                  <strong>Banheiros:</strong> {{ imovel.banheiro }} <br />
+                  <i class="fa-solid fa-warehouse"></i>
+                  <strong>Garagem:</strong> {{ imovel.garagem }}
+                </p>
+                <p class="text-center" style="font-size: 0.6rem; float: right;">{{ imovel.codigo }}</p>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+
+        <div style="height: 300px;"></div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

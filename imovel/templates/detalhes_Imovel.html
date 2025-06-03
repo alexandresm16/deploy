@@ -1,0 +1,54 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section class="container">
+    <div class="container mt-4">
+        <h2>{{ imovel.codigo }} - {{ imovel.tipo|title }}</h2>
+
+        {% if imovel.foto %}
+        <img src="{{ imovel.foto.url }}" alt="Foto do imóvel" class="img-fluid mb-3">
+        {% endif %}
+
+        <p><strong>Descrição:</strong> {{ imovel.descricao }}</p>
+        <p><strong>Endereço:</strong> {{ imovel.logradouro }}, nº {{ imovel.numero }} - {{ imovel.bairro }},
+            {{ imovel.cidade }}/{{ imovel.uf }}</p>
+        <p><strong>CEP:</strong> {{ imovel.cep }}</p>
+
+        <hr>
+
+        {% load custom_filters %}
+
+        <p><strong>Valor de Venda:</strong> {{ imovel.valor_venda|formatar_moeda }}</p>
+        {% if imovel.valor_locacao %}
+        <p><strong>Valor de Locação:</strong> {{ imovel.valor_locacao|formatar_moeda }}</p>
+        {% endif %}
+        <p><strong>IPTU:</strong> {{ imovel.valor_iptu|formatar_moeda }}</p>
+        {% if imovel.valor_condominio %}
+        <p><strong>Condomínio:</strong> {{ imovel.valor_condominio|formatar_moeda }}</p>
+        {% endif %}
+
+        <hr>
+
+        <p><strong>Quartos:</strong> {{ imovel.quartos }}</p>
+        <p><strong>Banheiros:</strong> {{ imovel.banheiro }}</p>
+        <p><strong>Garagem:</strong> {{ imovel.garagem }}</p>
+
+        <p><strong>Área Total:</strong> {{ imovel.area_total }} m²</p>
+        <p><strong>Área Privada:</strong> {{ imovel.area_privada }} m²</p>
+        <p><strong>Área Útil:</strong> {{ imovel.area_util }} m²</p>
+
+        <hr>
+
+        <p><strong>Características:</strong> {{ imovel.caracteristicas }}</p>
+        <p><strong>Comodidades:</strong> {{ imovel.comodidades }}</p>
+        <p><strong>Status:</strong> {{ imovel.get_status_display }}</p>
+        <p><strong>Transação:</strong> {{ imovel.get_transacao_display }}</p>
+
+        <hr>
+
+        <a href="{% url 'editar_imovel' imovel.id %}" class="btn btn-primary">Editar</a>
+        <a href="{% url 'listar_imoveis' %}" class="btn btn-secondary">Voltar à lista</a>
+    </div>
+</section>
+{% endblock %}

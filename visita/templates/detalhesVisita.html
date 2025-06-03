@@ -1,0 +1,48 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section class="container pt-5">
+    <div class="row mt-5">
+        <!-- Primeira coluna -->
+        <div class="col-6">
+            <div class="container">
+                <h2>{{ visita.imovel.codigo }} - {{ visita.imovel.tipo|title }}</h2>
+
+                {% if visita.imovel.foto %}
+                <img src="{{ visita.imovel.foto.url }}" alt="Foto do imóvel" class="img-fluid mb-3">
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Segunda coluna -->
+        <div class="col-6">
+            <div class="container">
+                <h2 class="title text-center py-3">Informações da visita</h2>
+                <p><strong>Corretor:</strong> {{ visita.corretor }}</p>
+                <p><strong>Cliente:</strong> {{ visita.cliente }}</p>
+                <p><strong>Data:</strong> {{ visita.data_hora }}</p>
+            </div>
+            <hr>
+            <div class="container">
+                <h2 class="title text-center py-3">Endereço da visita</h2>
+                <p><strong>Endereço:</strong> {{ visita.imovel.logradouro }}, nº {{ visita.imovel.numero }} - {{
+                    visita.imovel.bairro }},
+                    {{ visita.imovel.cidade }}/{{ visita.imovel.uf }}</p>
+                <p><strong>CEP:</strong> {{ visita.imovel.cep }}</p>
+            </div>
+        </div>
+
+        <!-- Botões abaixo das colunas -->
+        <div class="col-12 mt-5 text-center">
+            <a href="{% url 'editar_visita' visita.id %}" class="btn btn-primary">Editar</a>
+            <a href="{% url 'listar_visitas' %}" class="btn btn-secondary">Voltar à lista</a>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#excluirVisitaModal{{ visita.id }}">
+                Excluir
+            </button>
+        </div>
+    </div>
+</section>
+
+{% include "excluirVisita.html" %}
+{% endblock %}

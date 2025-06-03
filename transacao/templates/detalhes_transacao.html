@@ -1,0 +1,50 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section class="container">
+    <div class="container mt-4">
+            {% include "excluir_transacao.html" %}
+
+        <h2>{{ transacao.imovel.codigo }} - {{ transacao.imovel.tipo|title }}</h2>
+
+        {% if transacao.imovel.foto %}
+        <img src="{{ transacao.imovel.foto.url }}" alt="Foto do imóvel" class="img-fluid mb-3">
+        {% endif %}
+
+        <p><strong>Descrição:</strong> {{ transacao.imovel.descricao }}</p>
+        <p><strong>Endereço:</strong> {{ transacao.imovel.logradouro }}, nº {{ transacao.imovel.numero }} - {{
+            transacao.imovel.bairro }},
+            {{ transacao.imovel.cidade }}/{{ transacao.imovel.uf }}</p>
+        <p><strong>CEP:</strong> {{ transacao.imovel.cep }}</p>
+
+        <hr>
+
+        <p> {{ transacao.tipo }} </p>
+
+        {% load custom_filters %}
+        <p><strong>Valor:</strong> {{ transacao.valor|formatar_moeda }}</p>
+        <p><strong>Taxa:</strong> {{ transacao.valortaxa }}</p>
+        <p><strong>Valor da Taxa:</strong> {{ transacao.valortaxado }}</p>
+        <p><strong>Competência:</strong> {{ transacao.competencia|date:"m/Y" }}</p>
+
+        <hr>
+
+        <p><strong>Área Total:</strong> {{ imovel.area_total }} m²</p>
+
+        <hr>
+
+        {% if transacao.tipo == 'Venda' %}
+        <a href="{% url 'editar_venda' transacao.id %}" class="btn btn-primary me-2">Editar</a>
+        {% elif transacao.tipo == 'Locacao' %}
+        <a href="{% url 'editar_aluguel' transacao.id %}" class="btn btn-primary me-2">Editar</a>
+        {% endif %}
+        <button class="btn btn-danger" data-bs-toggle="modal"
+                data-bs-target="#excluirTransacaoModal{{ transacao.id }}">
+            Excluir
+        </button>
+        <a href="{% url 'listar_transacoes' %}" class="btn btn-secondary">Voltar à lista</a>
+    </div>
+</section>
+
+{% endblock %}

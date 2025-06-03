@@ -1,0 +1,21 @@
+<div class="modal fade" id="excluirProprietarioModal{{ proprietario.id }}" tabindex="-1"
+     aria-labelledby="excluirProprietarioLabel{{ proprietario.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="POST" action="{% url 'excluir_proprietario' proprietario.id %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="excluirProprietarioLabel{{ proprietario.id }}">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza que deseja excluir o proprietário "<b>{{ proprietario.nome }}</b>"?
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

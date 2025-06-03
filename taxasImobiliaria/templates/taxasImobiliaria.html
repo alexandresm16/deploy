@@ -1,0 +1,48 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section class="container">
+    <div class="container my-5">
+        <h2 class="mb-4 text-center"><u>Taxas de Negociação</u></h2>
+
+        {% bootstrap_messages %}
+
+        {% if taxas_i %}
+        <div class="table-responsive shadow-sm rounded bg-white p-4">
+            <table class="table table-striped align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Valor (%)</th>
+                        <th scope="col">Data da Ultima Alteração</th>
+                        <th scope="col">Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for taxa in taxas_i %}
+                    <tr>
+                        <td>{{ taxa.nome }}</td>
+                        <td><b>{{ taxa.valor|default:"Valor inválido" }}</b></td>
+                        <td>{{ taxa.data_alteracao }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal"
+                                data-bs-target="#editarTaxaModal{{ taxa.id }}">
+                                Editar
+                            </button>
+
+                            {% include "modaisTaxas.html" %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div>
+            <h2 class="title">Não a taxas cadastradas</h2>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

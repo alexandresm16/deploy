@@ -1,0 +1,95 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section class="container">
+    <div class="container my-5">
+        <h2 class="mb-4 text-center"><u>Imóveis</u></h2>
+        <a href="{% url 'incluir_imovel' %}" class="btn btn-primary mb-4">
+            <span><i class="fa-solid fa-plus"></i></span>
+            Incluir Imóvel
+        </a>
+
+        <form method="get" class="form-inline mb-3">
+            <input type="text" name="buscar" class="form-control mr-2" placeholder="Buscar..." value="{{ buscar }}">
+            {% if status %}
+            <input type="hidden" name="status" value="{{ status }}">
+            {% endif %}
+        </form>
+
+        <div class="py-3" role="group" style="color: black">
+            <a href="{% url 'listar_imoveis' %}?buscar={{ buscar }}" class="btn btn-outline-secondary p-1">Todos</a>
+            <a href="?status=disponivel&buscar={{ buscar }}"
+               class="btn btn-outline-success p-1 {% if status == 'disponivel' %}active{% endif %}">Disponíveis</a>
+            <a href="?status=vendido&buscar={{ buscar }}"
+               class="btn btn-outline-danger p-1 {% if status == 'vendido' %}active{% endif %}">Vendidos</a>
+            <a href="?status=alugado&buscar={{ buscar }}"
+               class="btn btn-outline-warning p1 {% if status == 'alugado' %}active{% endif %}">Alugados</a>
+            <a href="?status=indisponivel&buscar={{ buscar }}"
+               class="btn btn-outline-dark p1 {% if status == 'indisponivel' %}active{% endif %}">Indisponíveis</a>
+        </div>
+
+        {% bootstrap_messages %}
+        <div class="text-end">
+            <div class="pe-3">
+                Total de Imóveis cadastrados: {{ qtd_imoveis }}
+            </div>
+        </div>
+        <div class="table-responsive shadow-sm rounded bg-white p-4">
+            <table class="table table-striped align-middle text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">UF</th>
+                    <th scope="col">Cidade</th>
+                    <th scope="col">Bairro</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Proprietários</th>
+                    <th scope="col">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for imovel in imoveis %}
+                <tr>
+                    <td>{{ imovel.id }}</td>
+                    <td>{{ imovel.uf }}</td>
+                    <td>{{ imovel.cidade }}</td>
+                    <td>{{ imovel.bairro }}</td>
+                    <td>{{ imovel.tipo }}</td>
+                    <td>{{ imovel.status }}</td>
+                    <td>
+                        {% for proprietario in imovel.proprietario.all %}
+                        {% if forloop.last %}
+                        {{ proprietario }}
+                        {% else %}
+                        {{ proprietario }},
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+
+                    <td>
+                        <a href="{% url 'editar_imovel' imovel.id %}" class="btn btn-sm btn-outline-primary me-2">
+                            Editar
+                        </a>
+                        <a href="{% url 'visualizar_imovel' imovel.id %}"
+                           class="btn btn-sm btn-outline-success me-2">
+                            Visualizar
+                        </a>
+                        <a href="{% url 'proprietario_imovel' imovel.id %}"
+                           class="btn btn-sm btn-outline-warning me-2">
+                            Proprietário
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div>
+                {% include 'paginator.html' %}
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

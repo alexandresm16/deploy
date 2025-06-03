@@ -1,0 +1,127 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h4 class="mb-4 text-center">Cadastrar Imóvel</h4>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_messages %}
+
+                    <!-- Dados de Localização -->
+                    <div class="my-4 border-bottom border-3 border-primary">
+                        <h5 class="text-primary pt-3">Localização</h5>
+                        <div class="row">
+                            <div class="col-md-4">{% bootstrap_field form.codigo %}</div>
+                            <div class="col-md-8">{% bootstrap_field form.logradouro %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.numero %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.bairro %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.cidade %}</div>
+                            <div class="col-md-2">{% bootstrap_field form.uf %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.cep %}</div>
+                        </div>
+                    </div>
+
+                    <!-- Valores -->
+                    <div class="my-4 border-bottom border-3 border-primary">
+                        <h5 class="text-primary pt-3">Valores</h5>
+                        <div class="row">
+                            <div class="col-md-4">{% bootstrap_field form.valor_venda %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.valor_locacao %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.valor_iptu %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.valor_condominio %}</div>
+                        </div>
+                    </div>
+
+                    <!-- Áreas -->
+                    <div class="my-4 border-bottom border-3 border-primary">
+                        <h5 class="text-primary pt-3">Áreas</h5>
+                        <div class="row">
+                            <div class="col-md-4">{% bootstrap_field form.area_total %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.area_privada %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.area_util %}</div>
+                        </div>
+                    </div>
+
+                    <!-- Características -->
+                    <div class="my-4 border-bottom border-3 border-primary">
+                        <h5 class="text-primary pt-3">Características do Imóvel
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-4">{% bootstrap_field form.quartos %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.banheiro %}</div>
+                            <div class="col-md-4">{% bootstrap_field form.garagem %}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">{% bootstrap_field form.tipo %}</div>
+                            <div class="col-md-6">{% bootstrap_field form.transacao %}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">{% bootstrap_field form.status %}</div>
+                        </div>
+                    </div>
+
+                    <!-- Textos longos -->
+                    <div class="my-4 border-bottom border-3 border-primary">
+                        <h5 class="text-primary pt-3">Descrição e Outros</h5>
+                        <div class="row">
+                            <div class="col-12">{% bootstrap_field form.descricao %}</div>
+                            <div class="col-12">{% bootstrap_field form.caracteristicas %}</div>
+                            <div class="col-12">{% bootstrap_field form.comodidades %}</div>
+                        </div>
+                    </div>
+
+                    <div class="my-4 border-bottom border-3 border-primary">
+                        <h5 class="text-primary pt-3">Proprietários</h5>
+                        <div class="col-md-4">{% bootstrap_field form.proprietario %}</div>
+                    </div>
+
+                    <!-- Imagem -->
+                    <div class="mb-4 border-bottom border-3 border-primary">
+                        <h5 class="text-primary pt-3">Imagem</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {% bootstrap_field form.foto %}
+
+                                <img id="preview-image" style="max-width: 300px; display: none;"/>
+                                <script>
+                                    function previewFoto(event) {
+                                        const preview = document.getElementById('preview-image');
+                                        preview.src = URL.createObjectURL(event.target.files[0]);
+                                        preview.style.display = 'block';
+                                    }
+
+                                    document.getElementById("id_foto").addEventListener("change", previewFoto);
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        {% if field.help_text %}
+                        <p class="help">{{ field.help_text }}</p>
+                        {% endif %}
+                        {% for error in field.errors %}
+                        <p class="help is-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="text-end mt-4">
+                        <button type="submit" class="btn btn-success">Salvar Imóvel</button>
+                    </div>
+                    <div class="text-end mt-4">
+                        <a href="{% url 'listar_imoveis' %}" class="btn btn-danger">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section>
+    <div class="container py-5">
+        <form method="POST" enctype="multipart/form-data">
+            <h1 class="text-center">Associar Proprietários ao Imovel: {{ imovel }}</h1>
+            {% csrf_token %}
+            {% bootstrap_formset formset layout='horizontal' %}
+            {{ formset.management_form }}
+            {% bootstrap_messages %}
+            <div class="text-center mt-4">
+               {% bootstrap_button button_type="submit" content="Salvar" %}
+                <a href="{% url 'listar_imoveis' %}" type="button" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

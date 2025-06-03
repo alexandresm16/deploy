@@ -1,0 +1,90 @@
+{% extends "principal.html" %}
+{% load static %}
+{% block content %}
+{% load django_bootstrap5 %}
+<section class="container">
+    <div class="container my-5">
+        <h2 class="mb-4 text-center"><u>Proprietários</u></h2>
+
+        <section class="container px-3 py-2">
+            <div class="d-flex justify-content-start mb-4">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#incluirProprietario">
+                    <span><i class="fa-solid fa-plus"></i></span>
+                    Incluir Proprietário
+                </button>
+            </div>
+
+
+            <div class="">
+                <form action="" method="GET">
+                    <div class="d-flex align-items-start gap-2 my-4">
+                        <label class="label p-2 mt-2"></label>
+                        <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}"
+                               placeholder="Digite o nome do Proprietário">
+                        <button type="submit" class="btn btn-success">
+                            Buscar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        {% bootstrap_messages %}
+        <div class="text-end">
+            <div class="pe-3">
+                Total de Proprietários cadastrados: {{ qtd_proprietarios }}
+            </div>
+        </div>
+
+        {% if proprietarios %}
+        <div class="table-responsive shadow-sm rounded bg-white p-4">
+            <table class="table table-striped align-middle text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Editar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for proprietario in proprietarios %}
+                <tr>
+                    <td>{{ proprietario.nome }}</td>
+                    <td>{{ proprietario.fone }}</td>
+                    <td>{{ proprietario.email }}</td>
+                    <td>
+                        <a href="{% url 'editar_proprietario' proprietario.id %}"
+                           class="btn btn-sm btn-outline-primary me-2">
+                            Editar
+                        </a>
+                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                data-bs-target="#excluirProprietarioModal{{ proprietario.id }}">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+                {% include "excluirProprietario.html" %}
+                {% endfor %}
+                </tbody>
+            </table>
+            {% include 'paginator.html' %}
+        </div>
+        {% endif %}
+    </div>
+    {% include "incluirProprietario.html" %}
+</section>
+
+{% if abrir_modal %}
+<style>
+    .modal-backdrop {
+        display: none;
+    }
+</style>
+<script>
+    var myModal = new bootstrap.Modal(document.getElementById('incluirProprietario'));
+    myModal.show();
+</script>
+{% endif %}
+
+
+{% endblock %}
